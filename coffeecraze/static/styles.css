@@ -1,0 +1,83 @@
+/* General Reset */
+body, h1, h2, h3, p, ul, ol, li {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Foundation */
+body {
+    background-color: #ffffff; /* White background */
+    color: #0d401c; /* Dark green text for contrast */
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+}
+
+a {
+    color: #0d401c; /* Dark green links */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #0d401c; /* Dark green background */
+    border-bottom: 2px solid #64a964; /* Accent lighter green border */
+}
+
+.navbar-brand, .nav-link {
+    color: #ffffff; /* White text */
+}
+
+.nav-link:hover {
+    color: #64a964; /* Lighter green hover */
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #0d401c; /* Dark green */
+    border-color: #0d401c;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #64a964; /* Slightly lighter green */
+    border-color: #64a964;
+}
+
+/* Game Area */
+#game-area {
+    padding: 20px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border: 3px solid #0d401c; /* Green border around images */
+    border-radius: 8px;
+}
+
+/* Game Over Section */
+#game-over {
+    background-color: #0d401c; /* Dark green */
+    color: #ffffff; /* White text */
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+#game-over a {
+    color: #64a964;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 10px 0;
+    color: #ffffff;
+    background-color: #0d401c; /* Dark green */
+    border-top: 2px solid #64a964; /* Accent lighter green border */
+}
