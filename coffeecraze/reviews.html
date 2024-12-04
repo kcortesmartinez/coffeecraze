@@ -1,0 +1,57 @@
+{% extends "index.html" %}
+
+{% block title %}
+    Reviews
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">Coffee Shop Reviews</h1>
+    
+    <!-- Display Existing Reviews -->
+    <div class="mt-5">
+        <h3>Existing Reviews</h3>
+        <div class="list-group">
+            {% for review in reviews %}
+            <div class="list-group-item">
+                <h5>{{ review.coffee_shop_name }}</h5>
+                <p class="mb-1">{{ review.text }}</p>
+                <small class="text-muted">Rating: {{ review.rating }} / 5</small>
+                <br>
+                <small class="text-muted">Submitted by: {{ review.username }}</small>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Submit a New Review -->
+    <div class="mt-5">
+        <h3>Write a Review</h3>
+        <form action="/reviews" method="post">
+            <div class="mb-3">
+                <label for="coffee_shop" class="form-label">Coffee Shop</label>
+                <select class="form-select" id="coffee_shop" name="coffee_shop_id" required>
+                    {% for coffee_shop in coffee_shops %}
+                    <option value="{{ coffee_shop.id }}">{{ coffee_shop.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="review_text" class="form-label">Your Review</label>
+                <textarea class="form-control" id="review_text" name="review_text" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="rating" class="form-label">Rating</label>
+                <select class="form-select" id="rating" name="rating" required>
+                    <option value="1">1 - Poor</option>
+                    <option value="2">2 - Fair</option>
+                    <option value="3">3 - Good</option>
+                    <option value="4">4 - Very Good</option>
+                    <option value="5">5 - Excellent</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

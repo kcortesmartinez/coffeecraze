@@ -1,0 +1,72 @@
+{% extends "index.html" %}
+
+{% block title %}
+    Game
+{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-4">
+    <h1>Rank Your Favorite Coffee Shops</h1>
+    <p>Choose your favorite coffee shop. Once all options are ranked, the game will end!</p>
+
+    <!-- Game Area -->
+    <div id="game-area" class="mt-5">
+        <!-- Coffee Shop 1 -->
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <img id="logo1" src="{{ coffee_shops[0].logo_url }}" alt="{{ coffee_shops[0].name }}" class="img-fluid border rounded">
+                <h5 id="name1">{{ coffee_shops[0].name }}</h5>
+                <button class="btn btn-primary mt-3 w-100" onclick="chooseCoffee(0)">Select</button>
+            </div>
+
+            <!-- Coffee Shop 2 -->
+            <div class="col-md-4">
+                <img id="logo2" src="{{ coffee_shops[1].logo_url }}" alt="{{ coffee_shops[1].name }}" class="img-fluid border rounded">
+                <h5 id="name2">{{ coffee_shops[1].name }}</h5>
+                <button class="btn btn-primary mt-3 w-100" onclick="chooseCoffee(1)">Select</button>
+            </div>
+        </div>
+    </div>
+
+   <!-- Game Over Message -->
+<div id="game-over" class="mt-5 d-none">
+    <h2>Game Over!</h2>
+    <p>Your favorite coffee shop is:</p>
+    <div class="mt-4">
+        <img id="favorite-logo" src="" alt="" class="img-fluid border rounded">
+        <h3 id="favorite-name" class="mt-3 text-success"></h3>
+    </div>
+    <p class="mt-4">Thank you for ranking the coffee shops. Check out the <a href="/leaderboard">leaderboard</a> to see how your rankings compare.</p>
+</div>
+
+<script>
+    const coffeeShops = {{ coffee_shops | tojson }};
+    let remainingShops = [...coffeeShops];
+    let round = 1;
+
+    function chooseCoffee(selectedIndex) {
+        // Update the backend with the selected coffee shop
+        fetch('/game', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ selected: remainingShops[selectedIndex] })
+        });
+
+        // Remove the selected shop from the remaining list
+        remainingShops.splice(selectedIndex, 1);
+
+        // End the game if no shops are left
+        if (remainingShops.length === 0) {
+            document.getElementById("game-area").classList.add("d-none");
+            document.getElementById("game-over").classList.remove("d-none");
+            return;
+        }
+
+        // Replace the unselected logo
+        const newIndex = (selectedIndex === 0) ? 1 : 0;
+        const nextShop = remainingShops.splice(0, 1)[0];
+        document.getElementById(`logo${newIndex + 1}`).src = nextShop.logo_url;
+        document.getElementById(`name${newIndex + 1}`).innerText = nextShop.name;
+    }
+</script>
+{% endblock %}
