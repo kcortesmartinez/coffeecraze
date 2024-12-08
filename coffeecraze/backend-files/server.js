@@ -7,6 +7,10 @@ const authRoutes = require("./routes/auth");
 const gameRoutes = require("./rotues/game");
 const leaderboardRoutes = require("./routes/leaderboard");
 
+const logger = require("./utils/logger");
+app.use(logger);
+
+
 // Will initialize the express app 
 const app = express();
 app.use(cors());
