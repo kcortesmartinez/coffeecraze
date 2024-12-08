@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_mongoengine import MongoEngine
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
@@ -6,7 +6,7 @@ from datetime import timedelta
 import os
 
 # Initialize Flask app
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
 # Configuration
 app.config['MONGODB_SETTINGS'] = {
@@ -33,6 +33,10 @@ class Score(db.Document):
     created_at = db.DateTimeField(auto_now_add=True)
 
 # Routes
+@app.route('/')
+def home():
+    return render_template('index.html')
+
 @app.route('/api/auth/signup', methods=['POST'])
 def signup():
     data = request.get_json()
@@ -105,4 +109,4 @@ def server_error(error):
 
 # Main entry point
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True) 

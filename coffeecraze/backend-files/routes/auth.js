@@ -1,12 +1,12 @@
-const express = require("express");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User'); // Correct path to the User model
+const generateToken = require('../utils/generateToken');
 
 const router = express.Router();
 
-// User signup
-router.post("/signup", async (req, res) => {
+router.post('/signup', async (req, res) => {
   const { username, password } = req.body;
 
   try {
