@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, render_template, request
 from flask_mongoengine import MongoEngine
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
@@ -33,6 +33,10 @@ class Score(db.Document):
     created_at = db.DateTimeField(auto_now_add=True)
 
 # Routes
+@app.route('/')
+def home():
+    return render_template('index.html')
+
 @app.route('/api/auth/signup', methods=['POST'])
 def signup():
     data = request.get_json()
