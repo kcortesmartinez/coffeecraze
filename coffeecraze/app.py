@@ -159,7 +159,13 @@ def server_error(error):
 
 # Main entry point
 if __name__ == '__main__':
+<<<<<<< HEAD
     db.create_all()  # Ensure database tables exist
     app.run(debug=True)
 
 
+=======
+    with app.app_context():
+        db.create_all()  # Ensure database tables exist
+    app.run(debug=True, port=5001)
+>>>>>>> f8bd1f34bcf91b8df1075e0519f18b7c67a6e24d
