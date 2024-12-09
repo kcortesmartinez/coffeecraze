@@ -159,5 +159,6 @@ def server_error(error):
 
 # Main entry point
 if __name__ == '__main__':
-    db.create_all()  # Ensure database tables exist
-    app.run(debug=True)
+    with app.app_context():
+        db.create_all()  # Ensure database tables exist
+    app.run(debug=True, port=5001)
