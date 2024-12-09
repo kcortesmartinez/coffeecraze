@@ -46,7 +46,7 @@
 
 <script>
     const coffeeShops = {{ coffee_shops | tojson | safe }};
-    console.log(coffeeShops);
+    console.log(coffeeShops)
     let remainingShops = [...coffeeShops];  // Start with a copy of the original list
     let round = 1;
 

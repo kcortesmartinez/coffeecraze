@@ -9,6 +9,17 @@
     <h1>Leaderboard</h1>
     <p class="text-muted">See how the coffee shops are ranked!</p>
 
+    {% if winner %}
+        <div class="alert alert-success">
+            <h3>🎉 Winner: {{ winner.name }} 🎉</h3>
+            <p>With {{ winner.votes }} votes!</p>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <h3>No votes yet!</h3>
+        </div>
+    {% endif %}
+
     <table class="table table-striped table-bordered mt-4">
         <thead class="thead-light">
             <tr>
@@ -19,7 +30,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for coffee_shop in coffee_shops %}
+            {% for coffee_shop in leaderboard %}
             <tr>
                 <td>{{ loop.index }}</td>
                 <td>{{ coffee_shop.name }}</td>
