@@ -71,8 +71,8 @@ def register():
             return redirect(url_for('login'))
         except:
             return jsonify({"error": "User already exists"}), 400
-
-    return render_template('register.html')
+        
+    return render_template("register.html")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -159,6 +159,13 @@ def server_error(error):
 
 # Main entry point
 if __name__ == '__main__':
+<<<<<<< HEAD
+    db.create_all()  # Ensure database tables exist
+    app.run(debug=True)
+
+
+=======
     with app.app_context():
         db.create_all()  # Ensure database tables exist
     app.run(debug=True, port=5001)
+>>>>>>> f8bd1f34bcf91b8df1075e0519f18b7c67a6e24d
