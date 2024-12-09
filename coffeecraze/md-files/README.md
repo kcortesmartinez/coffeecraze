@@ -10,5 +10,5 @@ Visit the home page to navigate to various sections of the application, includin
 The included database contains the following tables:
 users, coffee_shops, rankings, and reviews
 
-
+https://youtu.be/yAng9_-XXFU
 
