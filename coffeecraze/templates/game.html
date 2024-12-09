@@ -51,36 +51,36 @@
     let round = 1;
 
     function chooseCoffee(selectedIndex) {
-        // Update the backend with the selected coffee shop
-        fetch('/game', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ coffee_shop_id: remainingShops[selectedIndex].id })
-        });
+    // Update the backend with the selected coffee shop
+    fetch('/game', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ coffee_shop_id: remainingShops[selectedIndex].id })
+    });
 
-        // Remove the selected shop from the remaining list
-        remainingShops.splice(selectedIndex, 1);
+    // Remove the unselected shop from the remaining list
+    const unselectedIndex = selectedIndex === 0 ? 1 : 0;
+    remainingShops.splice(unselectedIndex, 1);
 
-        // End the game if no shops are left
-        if (remainingShops.length === 0) {
-            document.getElementById("game-area").classList.add("d-none");
-            document.getElementById("game-over").classList.remove("d-none");
+    // End the game if only one shop remains
+    if (remainingShops.length === 1) {
+        document.getElementById("game-area").classList.add("d-none");
+        document.getElementById("game-over").classList.remove("d-none");
 
-            // Display the final favorite coffee shop
-            const favoriteShop = coffeeShops[0];  // Use the first shop as the winner for now (you can adjust this logic)
-            document.getElementById("favorite-logo").src = favoriteShop.logo_url;
-            document.getElementById("favorite-name").innerText = favoriteShop.name;
-            return;
-        }
-
-        // Replace the unselected logo with the next coffee shop
-        const nextShop = remainingShops[0];
-        const nextIndex = (selectedIndex === 0) ? 1 : 0;
-        document.getElementById(`logo${nextIndex + 1}`).src = nextShop.logo_url;
-        document.getElementById(`name${nextIndex + 1}`).innerText = nextShop.name;
-
-        // Remove the chosen coffee shop from remainingShops
-        remainingShops.shift();  // Remove the first element after switching
+        // Display the final favorite coffee shop
+        const favoriteShop = remainingShops[0];  // The last remaining shop is the winner
+        document.getElementById("favorite-logo").src = favoriteShop.logo_url;
+        document.getElementById("favorite-name").innerText = favoriteShop.name;
+        return;
     }
+
+    // Replace the unselected coffee shop with the next shop in the list
+    const nextShop = remainingShops[selectedIndex === 0 ? 1 : 0]; // Pick the next shop to display
+    document.getElementById(`logo${unselectedIndex + 1}`).src = nextShop.logo_url;
+    document.getElementById(`name${unselectedIndex + 1}`).innerText = nextShop.name;
+
+    // Log remaining shops for debugging
+    console.log("Remaining Shops:", remainingShops);
+}
 </script>
 {% endblock %}
