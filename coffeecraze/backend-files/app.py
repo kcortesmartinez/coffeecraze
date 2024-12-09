@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from flask import Flask, jsonify, render_template, request
+=======
+from flask import Flask, jsonify, request, render_template
+>>>>>>> 8b75e7e037f5c3e35cfaa81d7496c3e7dad0e62a
 from flask_mongoengine import MongoEngine
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
@@ -6,7 +10,7 @@ from datetime import timedelta
 import os
 
 # Initialize Flask app
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
 # Configuration
 app.config['MONGODB_SETTINGS'] = {
@@ -109,4 +113,4 @@ def server_error(error):
 
 # Main entry point
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True) 
