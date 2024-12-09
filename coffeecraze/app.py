@@ -49,6 +49,7 @@ def register():
 
 @app.route('/game', methods=['GET', 'POST'])
 def game():
+    # Query the coffee shops from the database
     conn = get_db_connection()
     coffee_shops = conn.execute("SELECT * FROM coffee_shops").fetchall()
     conn.close()
@@ -56,6 +57,15 @@ def game():
     if not coffee_shops:
         return render_template('game.html', coffee_shops=[])
 
+    # Convert rows to dictionaries for JSON serialization
+    coffee_shops_data = [{
+        'id': shop['id'],
+        'name': shop['name'],
+        'logo_url': shop['logo_url'],
+        'description': shop['description']
+    } for shop in coffee_shops]
+
+    # Handle POST request (user voting)
     if request.method == 'POST':
         user_id = session.get('user_id')
         coffee_shop_id = request.json.get('coffee_shop_id')
@@ -74,7 +84,8 @@ def game():
 
         return "Vote submitted successfully", 201
 
-    return render_template('game.html', coffee_shops=coffee_shops)
+    # Render the template with the coffee shop data
+    return render_template('game.html', coffee_shops=coffee_shops_data)
 
 @app.route('/leaderboard')
 def leaderboard():
@@ -151,7 +162,3 @@ def logout():
 # Main entry point
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
-
