@@ -11,37 +11,42 @@
 
     <!-- Game Area -->
     <div id="game-area" class="mt-5">
-        <!-- Coffee Shop 1 -->
-        <div class="row justify-content-center">
-            <div class="col-md-4">
-                <img id="logo1" src="{{ coffee_shops[0].logo_url }}" alt="{{ coffee_shops[0].name }}" class="img-fluid border rounded">
-                <h5 id="name1">{{ coffee_shops[0].name }}</h5>
-                <button class="btn btn-primary mt-3 w-100" onclick="chooseCoffee(0)">Select</button>
-            </div>
+        {% if coffee_shops and coffee_shops|length > 1 %}
+            <!-- Coffee Shop 1 -->
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <img id="logo1" src="{{ coffee_shops[0].logo_url }}" alt="{{ coffee_shops[0].name }}" class="img-fluid border rounded">
+                    <h5 id="name1">{{ coffee_shops[0].name }}</h5>
+                    <button class="btn btn-primary mt-3 w-100" onclick="chooseCoffee(0)">Select</button>
+                </div>
 
-            <!-- Coffee Shop 2 -->
-            <div class="col-md-4">
-                <img id="logo2" src="{{ coffee_shops[1].logo_url }}" alt="{{ coffee_shops[1].name }}" class="img-fluid border rounded">
-                <h5 id="name2">{{ coffee_shops[1].name }}</h5>
-                <button class="btn btn-primary mt-3 w-100" onclick="chooseCoffee(1)">Select</button>
+                <!-- Coffee Shop 2 -->
+                <div class="col-md-4">
+                    <img id="logo2" src="{{ coffee_shops[1].logo_url }}" alt="{{ coffee_shops[1].name }}" class="img-fluid border rounded">
+                    <h5 id="name2">{{ coffee_shops[1].name }}</h5>
+                    <button class="btn btn-primary mt-3 w-100" onclick="chooseCoffee(1)">Select</button>
+                </div>
             </div>
-        </div>
+        {% else %}
+            <p>No coffee shops available. Please try again later.</p>
+        {% endif %}
     </div>
 
    <!-- Game Over Message -->
-<div id="game-over" class="mt-5 d-none">
-    <h2>Game Over!</h2>
-    <p>Your favorite coffee shop is:</p>
-    <div class="mt-4">
-        <img id="favorite-logo" src="" alt="" class="img-fluid border rounded">
-        <h3 id="favorite-name" class="mt-3 text-success"></h3>
+    <div id="game-over" class="mt-5 d-none">
+        <h2>Game Over!</h2>
+        <p>Your favorite coffee shop is:</p>
+        <div class="mt-4">
+            <img id="favorite-logo" src="" alt="" class="img-fluid border rounded">
+            <h3 id="favorite-name" class="mt-3 text-success"></h3>
+        </div>
+        <p class="mt-4">Thank you for ranking the coffee shops. Check out the <a href="/leaderboard">leaderboard</a> to see how your rankings compare.</p>
     </div>
-    <p class="mt-4">Thank you for ranking the coffee shops. Check out the <a href="/leaderboard">leaderboard</a> to see how your rankings compare.</p>
 </div>
 
 <script>
     const coffeeShops = {{ coffee_shops | tojson }};
-    let remainingShops = [...coffeeShops];
+    let remainingShops = [...coffeeShops];  // Start with a copy of the original list
     let round = 1;
 
     function chooseCoffee(selectedIndex) {
@@ -49,7 +54,7 @@
         fetch('/game', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ selected: remainingShops[selectedIndex] })
+            body: JSON.stringify({ coffee_shop_id: remainingShops[selectedIndex].id })
         });
 
         // Remove the selected shop from the remaining list
@@ -59,14 +64,22 @@
         if (remainingShops.length === 0) {
             document.getElementById("game-area").classList.add("d-none");
             document.getElementById("game-over").classList.remove("d-none");
+
+            // Display the final favorite coffee shop
+            const favoriteShop = coffeeShops[0];  // Use the first shop as the winner for now (you can adjust this logic)
+            document.getElementById("favorite-logo").src = favoriteShop.logo_url;
+            document.getElementById("favorite-name").innerText = favoriteShop.name;
             return;
         }
 
-        // Replace the unselected logo
-        const newIndex = (selectedIndex === 0) ? 1 : 0;
-        const nextShop = remainingShops.splice(0, 1)[0];
-        document.getElementById(`logo${newIndex + 1}`).src = nextShop.logo_url;
-        document.getElementById(`name${newIndex + 1}`).innerText = nextShop.name;
+        // Replace the unselected logo with the next coffee shop
+        const nextShop = remainingShops[0];
+        const nextIndex = (selectedIndex === 0) ? 1 : 0;
+        document.getElementById(`logo${nextIndex + 1}`).src = nextShop.logo_url;
+        document.getElementById(`name${nextIndex + 1}`).innerText = nextShop.name;
+
+        // Remove the chosen coffee shop from remainingShops
+        remainingShops.shift();  // Remove the first element after switching
     }
 </script>
 {% endblock %}

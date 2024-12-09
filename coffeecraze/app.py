@@ -96,20 +96,20 @@ def logout():
 
 @app.route('/game', methods=['GET', 'POST'])
 def game():
-    if request.method == 'POST':
-        user_id = session.get('user_id')
-        coffee_shop_id = request.json.get('coffee_shop_id')
-
-        if not user_id or not coffee_shop_id:
-            return jsonify({"error": "User or Coffee Shop ID missing"}), 400
-
-        new_score = Score(user_id=user_id, coffee_shop_id=coffee_shop_id)
-        db.session.add(new_score)
-        db.session.commit()
-        return jsonify({"message": "Vote submitted successfully"}), 201
-
     coffee_shops = CoffeeShop.query.all()
+    
+    # Debugging
+    print("Coffee Shops:", coffee_shops)
+
+    # If there are no coffee shops in the database, handle the case
+    if not coffee_shops:
+        return render_template('game.html', coffee_shops=[])
+
+    if request.method == 'POST':
+        pass
+
     return render_template('game.html', coffee_shops=coffee_shops)
+
 
 @app.route('/leaderboard')
 def leaderboard():
